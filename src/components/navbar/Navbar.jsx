@@ -65,9 +65,12 @@ const Navbar = () => {
           <GrSearch />
         </div>
 
-        <a className="btn text-main border-main bg-white normal-case font-semibold shadow-md hover:bg-red-50 hover:border-main">
+        <Link
+          to="/login"
+          className="btn text-main border-main bg-white normal-case font-semibold shadow-md hover:bg-red-50 hover:border-main"
+        >
           Appointment
-        </a>
+        </Link>
       </div>
     </div>
   );
