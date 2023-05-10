@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
   return (
-    <div className="lg:px-36 px-4 py-10 lg:grid grid-cols-2 gap-20">
+    <div className="lg:px-36 px-4 py-24 lg:grid grid-cols-2 gap-20">
       <div className="relative">
         <img
           src="https://i.ibb.co/DD9Z3Fs/maxim-hopman-s4d-ESS0yl-A-unsplash.jpg"
