@@ -13,14 +13,20 @@ const Registration = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    register(email, password)
-      .then(() => {
-        navigate(from);
-        e.target.reset();
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
+    password < 6 && setError("Password must be at least 6 characters");
+    const confirmPassword = e.target.confirmPassword.value;
+    if (password === confirmPassword) {
+      register(email, password)
+        .then(() => {
+          navigate(from);
+          e.target.reset();
+        })
+        .catch((err) => {
+          setError(err.message);
+        });
+    } else {
+      setError("Password dose not match !");
+    }
   };
   return (
     <div className="hero min-h-screen bg-base-200 pt-20">
@@ -39,6 +45,7 @@ const Registration = () => {
                 <input
                   type="email"
                   name="email"
+                  required
                   placeholder="Enter your email address"
                   className="input border border-main"
                 />
@@ -50,6 +57,7 @@ const Registration = () => {
                 <input
                   type="password"
                   name="password"
+                  required
                   placeholder="Enter your password"
                   className="input border border-main"
                 />
@@ -60,6 +68,8 @@ const Registration = () => {
                 </label>
                 <input
                   type="password"
+                  name="confirmPassword"
+                  required
                   placeholder="Confirm your password"
                   className="input border border-main"
                 />

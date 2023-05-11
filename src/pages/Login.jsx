@@ -1,6 +1,28 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context-provider/AuthProvider";
 
 const Login = () => {
+  const { login } = useContext(AuthContext);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    password < 6 && setError("Password must be at least 6 characters");
+    login(email, password)
+      .then(() => {
+        navigate(from);
+        e.target.reset();
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
   return (
     <div className="hero min-h-screen bg-base-200 pt-20">
       <div className="hero-content gap-44">
@@ -9,7 +31,7 @@ const Login = () => {
         </div>
         <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
           <div className="card-body">
-            <form>
+            <form onSubmit={handleSubmit}>
               <h3 className="text-3xl font-bold text-center">Login</h3>
               <div className="form-control">
                 <label className="label">
@@ -17,6 +39,8 @@ const Login = () => {
                 </label>
                 <input
                   type="email"
+                  required
+                  name="email"
                   placeholder="Enter your email address"
                   className="input border border-main"
                 />
@@ -27,6 +51,8 @@ const Login = () => {
                 </label>
                 <input
                   type="password"
+                  required
+                  name="password"
                   placeholder="Enter your password"
                   className="input border border-main"
                 />
@@ -37,7 +63,11 @@ const Login = () => {
                 </label>
               </div>
               <div className="form-control mt-6">
-                <button className="btn bg-main hover:bg-main border-0 normal-case">
+                {error && <p className="py-1 font-bold text-main">{error}</p>}
+                <button
+                  type="submit"
+                  className="btn bg-main hover:bg-main border-0 normal-case"
+                >
                   Login
                 </button>
               </div>
