@@ -3,7 +3,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context-provider/AuthProvider";
 
 const Registration = () => {
-  const { register } = useContext(AuthContext);
+  const { register, loginWithGoogle, loginWithFacebook } =
+    useContext(AuthContext);
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,6 +28,18 @@ const Registration = () => {
     } else {
       setError("Password dose not match !");
     }
+  };
+
+  const handleGoogleLogin = () => {
+    loginWithGoogle().then(() => {
+      navigate(from);
+    });
+  };
+
+  const handleFacebookLogin = () => {
+    loginWithFacebook().then(() => {
+      navigate(from);
+    });
   };
   return (
     <div className="hero min-h-screen bg-base-200 pt-20">
@@ -90,11 +103,13 @@ const Registration = () => {
                 className="w-6 cursor-pointer"
                 src="https://i.ibb.co/kBbDdKw/google.png"
                 alt="google"
+                onClick={handleGoogleLogin}
               />
               <img
                 className="w-6 cursor-pointer"
                 src="https://i.ibb.co/K2QMKc4/facebook.png"
                 alt="facebook"
+                onClick={handleFacebookLogin}
               />
               <img
                 className="w-6 cursor-pointer"
