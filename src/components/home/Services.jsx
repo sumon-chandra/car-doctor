@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { FaAngleRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Services = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("services.json")
+    fetch("http://localhost:5000/services")
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
@@ -29,7 +30,9 @@ const Services = () => {
               <h3 className="card-title">{service.title}</h3>
               <div className="text-main font-semibold flex justify-between">
                 <p>Price: {service.price}</p>
-                <FaAngleRight className="cursor-pointer" />
+                <Link to={`book/${service._id}`}>
+                  <FaAngleRight className="cursor-pointer" />
+                </Link>
               </div>
             </div>
           </div>

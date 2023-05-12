@@ -2,9 +2,17 @@ import { FaShoppingCart, FaSearch } from "react-icons/fa";
 
 import logo from "../../assets/logo.png";
 import NavItem from "./NavItem";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../context-provider/AuthProvider";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { users, logout } = useContext(AuthContext);
+  const handleLogout = () => {
+    logout().then(() => {});
+    navigate("/login");
+  };
   return (
     <div className="navbar fixed lg:px-36 px-4 py-3 z-10 bg-gradient-to-b from-black">
       <div className="navbar-start">
@@ -63,14 +71,24 @@ const Navbar = () => {
           <FaShoppingCart className="cursor-pointer" />
           {/* <span className="badge badge-sm indicator-item">8</span> */}
           <FaSearch className="cursor-pointer" />
+          {users && <>{users.email}</>}
         </div>
 
-        <Link
-          to="/login"
-          className="btn text-lg text-main border-main bg-transparent normal-case font-semibold shadow-md hover:bg-white hover:border-main"
-        >
-          Appointment
-        </Link>
+        {users ? (
+          <button
+            onClick={handleLogout}
+            className="btn text-lg text-main border-main bg-transparent normal-case font-semibold shadow-md hover:bg-white hover:border-main"
+          >
+            Logout
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="btn text-lg text-main border-main bg-transparent normal-case font-semibold shadow-md hover:bg-white hover:border-main"
+          >
+            Login
+          </Link>
+        )}
       </div>
     </div>
   );

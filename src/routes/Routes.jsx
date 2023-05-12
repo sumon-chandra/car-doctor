@@ -11,6 +11,11 @@ import Services from "../pages/Services";
 import Contact from "../pages/Contact";
 import Login from "../pages/Login";
 import Registration from "../pages/Registration";
+import ServiceDetails from "../pages/ServiceDetails";
+import BookService from "../pages/BookService";
+
+// Loaders
+import { serviceLoader } from "../loaders/servicesLoader";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +23,12 @@ const router = createBrowserRouter(
       <Route index element={<Home />} />
       <Route path="about" element={<About />} />
       <Route path="services" element={<Services />} />
+      <Route
+        path="services/:id"
+        element={<ServiceDetails />}
+        loader={serviceLoader}
+      />
+      <Route path="book/:id" element={<BookService />} loader={serviceLoader} />
       <Route path="contact" element={<Contact />} />
       <Route path="login" element={<Login />} />
       <Route path="registration" element={<Registration />} />
