@@ -1,20 +1,41 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context-provider/AuthProvider";
-import { FaCross, FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 const Bookings = () => {
-  const { users } = useContext(AuthContext);
+  const { users, loading } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const demoImg = "https://i.ibb.co/rvB3cBJ/car-mechanics-2.jpg";
 
+  const url = `http://localhost:5000/bookings?email=${users?.email}`;
   useEffect(() => {
-    const url = `http://localhost:5000/bookings?email=${users.email}`;
     fetch(url)
       .then((res) => res.json())
       .then((data) => setBookings(data));
-  }, []);
-  console.log(bookings);
-  return (
+  }, [url]);
+
+  const handleDelete = (id) => {
+    const proceed = confirm("Are you sure you want to delete");
+    if (proceed) {
+      fetch(`http://localhost:5000/bookings/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          //   console.log(data);
+          if (data.deletedCount > 0) {
+            alert("Deleted successfully");
+            const remainingServices = bookings.filter(
+              (service) => service._id !== id
+            );
+            setBookings(remainingServices);
+          }
+        });
+    }
+  };
+  return loading ? (
+    <p className="text-7xl font-bold pt-32 text-center">Loading ...</p>
+  ) : (
     <div className="pt-20 lg:px-36 px-4">
       <h3 className="py-6 text-2xl font-bold text-center text-main">
         Your Booking list
@@ -26,7 +47,10 @@ const Bookings = () => {
             key={service._id}
           >
             <div className="flex items-center gap-4">
-              <button className="btn btn-sm shadow-lg w-10 h-10 text-lg p-1 rounded-full">
+              <button
+                onClick={() => handleDelete(service._id)}
+                className="btn btn-sm shadow-lg w-10 h-10 text-lg p-1 rounded-full"
+              >
                 <FaRegTrashAlt />
               </button>
               <img
