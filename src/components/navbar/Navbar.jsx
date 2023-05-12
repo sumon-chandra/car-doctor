@@ -1,4 +1,4 @@
-import { GrShop, GrSearch } from "react-icons/gr";
+import { FaShoppingCart, FaSearch } from "react-icons/fa";
 
 import logo from "../../assets/logo.png";
 import NavItem from "./NavItem";
@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <div className="navbar fixed lg:px-36 px-4 py-3 z-10 bg-gradient-to-b from-black to-[rgba(21, 21, 21, 0)]">
+    <div className="navbar fixed lg:px-36 px-4 py-3 z-10 bg-gradient-to-b from-black">
       <div className="navbar-start">
         <div className="dropdown">
           <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -42,7 +42,7 @@ const Navbar = () => {
         </div>
         <Link to="/" className="text-xl flex items-center">
           <img src={logo} alt="logo" className="w-14" />
-          <span>Car doctor</span>
+          <span className="text-xl font-bold text-white">Car doctor</span>
         </Link>
       </div>
       <div className="navbar-center hidden lg:flex">
@@ -59,15 +59,15 @@ const Navbar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <div className="indicator text-2xl flex gap-4 mr-4">
-          <GrShop />
+        <div className="indicator text-2xl flex gap-4 mr-4 text-white">
+          <FaShoppingCart className="cursor-pointer" />
           {/* <span className="badge badge-sm indicator-item">8</span> */}
-          <GrSearch />
+          <FaSearch className="cursor-pointer" />
         </div>
 
         <Link
           to="/login"
-          className="btn text-main border-main bg-white normal-case font-semibold shadow-md hover:bg-red-50 hover:border-main"
+          className="btn text-lg text-main border-main bg-transparent normal-case font-semibold shadow-md hover:bg-white hover:border-main"
         >
           Appointment
         </Link>
