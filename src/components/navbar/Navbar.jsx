@@ -61,6 +61,11 @@ const Navbar = () => {
           <li>
             <NavItem value="Services" to="/services" />
           </li>
+          {users && (
+            <li>
+              <NavItem value="My Bookings" to="/bookings" />
+            </li>
+          )}
           <li>
             <NavItem value="Contact" to="/contact" />
           </li>

@@ -16,6 +16,7 @@ import BookService from "../pages/BookService";
 
 // Loaders
 import { serviceLoader } from "../loaders/servicesLoader";
+import Bookings from "../pages/Bookings";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
         loader={serviceLoader}
       />
       <Route path="book/:id" element={<BookService />} loader={serviceLoader} />
+      <Route path="bookings" element={<Bookings />} />
       <Route path="contact" element={<Contact />} />
       <Route path="login" element={<Login />} />
       <Route path="registration" element={<Registration />} />
