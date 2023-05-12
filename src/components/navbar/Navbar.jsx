@@ -76,7 +76,6 @@ const Navbar = () => {
           <FaShoppingCart className="cursor-pointer" />
           {/* <span className="badge badge-sm indicator-item">8</span> */}
           <FaSearch className="cursor-pointer" />
-          {users && <p className="text-sm">{users.email}</p>}
         </div>
 
         {users ? (

@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context-provider/AuthProvider";
 import { FaRegTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Bookings = () => {
   const { users, loading } = useContext(AuthContext);
@@ -15,23 +16,35 @@ const Bookings = () => {
   }, [url]);
 
   const handleDelete = (id) => {
-    const proceed = confirm("Are you sure you want to delete");
-    if (proceed) {
-      fetch(`http://localhost:5000/bookings/${id}`, {
-        method: "DELETE",
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          //   console.log(data);
-          if (data.deletedCount > 0) {
-            alert("Deleted successfully");
-            const remainingServices = bookings.filter(
-              (service) => service._id !== id
-            );
-            setBookings(remainingServices);
-          }
-        });
-    }
+    fetch(`http://localhost:5000/bookings/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 0) {
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Do you wanna delete this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Delete",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "Deleted!",
+                "Your booked service has been deleted.",
+                "success"
+              );
+              const remainingServices = bookings.filter(
+                (service) => service._id !== id
+              );
+              setBookings(remainingServices);
+            }
+          });
+        }
+      });
   };
 
   const handleConfirmBookings = (id) => {
@@ -42,13 +55,31 @@ const Bookings = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data.modifiedCount > 0) {
-          const remaining = bookings.filter((service) => service._id !== id);
-          const updated = bookings.find((service) => service._id === id);
-          updated.status = "confirm";
-          const newBookings = [updated, ...remaining];
-          setBookings(newBookings);
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Do you wanna confirm?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirm",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire(
+                "Confirmed!",
+                "Your booked service has been confirmed.",
+                "success"
+              );
+              const remaining = bookings.filter(
+                (service) => service._id !== id
+              );
+              const updated = bookings.find((service) => service._id === id);
+              updated.status = "confirm";
+              const newBookings = [updated, ...remaining];
+              setBookings(newBookings);
+            }
+          });
         }
       });
   };
