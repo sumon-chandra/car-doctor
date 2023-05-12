@@ -33,6 +33,25 @@ const Bookings = () => {
         });
     }
   };
+
+  const handleConfirmBookings = (id) => {
+    fetch(`http://localhost:5000/bookings/${id}`, {
+      method: "PATCH",
+      headers: { "Content-type": "application/json" },
+      body: JSON.stringify({ status: "confirm" }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.modifiedCount > 0) {
+          const remaining = bookings.filter((service) => service._id !== id);
+          const updated = bookings.find((service) => service._id === id);
+          updated.status = "confirm";
+          const newBookings = [updated, ...remaining];
+          setBookings(newBookings);
+        }
+      });
+  };
   return loading ? (
     <p className="text-7xl font-bold pt-32 text-center">Loading ...</p>
   ) : (
@@ -40,7 +59,7 @@ const Bookings = () => {
       <h3 className="py-6 text-2xl font-bold text-center text-main">
         Your Booking list
       </h3>
-      <div className="">
+      <div>
         {bookings.map((service) => (
           <div
             className="bg-slate-100 p-4 rounded-lg shadow-lg mb-4 flex justify-between items-center w-4/6 mx-auto"
@@ -64,9 +83,16 @@ const Bookings = () => {
               <p className="font-bold ">{service.price}</p>
             </div>
             <p>{service.date}</p>
-            <button className="btn btn-sm bg-main text-white normal-case font-semibold shadow-md border-0 hover:bg-main">
-              Pending
-            </button>
+            {service.status === "confirm" ? (
+              <p className="italic text-lg font-bold text-main">Confirmed</p>
+            ) : (
+              <button
+                onClick={() => handleConfirmBookings(service._id)}
+                className="btn btn-sm bg-main text-white normal-case font-semibold shadow-md border-0 hover:bg-main"
+              >
+                Confirm now
+              </button>
+            )}
           </div>
         ))}
       </div>
